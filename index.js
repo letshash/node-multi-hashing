@@ -1,1 +1,1 @@
-module.exports = require('bindings')('nodex25x.node')
+module.exports = require('bindings')('multihashing.node')
