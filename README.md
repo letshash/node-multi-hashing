@@ -1,87 +1,13 @@
-## This repo is looking for maintainers! Please reach out if interested.
-
---------
-
-
-
-node-multi-hashing
+node-x25x
 ===============
+Cryptocurrency hashing functions for SIN
 
-[![Build Status](https://travis-ci.org/ROZ-MOFUMOFU-ME/node-multi-hashing.svg?branch=main)](https://travis-ci.org/ROZ-MOFUMOFU-ME/node-multi-hashing)
-[![CircleCI](https://circleci.com/gh/ROZ-MOFUMOFU-ME/node-multi-hashing/tree/main.svg?style=svg)](https://circleci.com/gh/ROZ-MOFUMOFU-ME/node-multi-hashing/tree/main)
-
-Cryptocurrency hashing functions for node.js.
-
-
-Algorithms
-----------
-* quark
-* x11
-* x13
-* nist5
-* scrypt
-* scryptn
-* scryptjane
-* keccak
-* bcrypt
-* skein
-* groestl
-* blake
-* fugue
-* qubit
-* hefty1
-* shavite3
-* cryptonight
-* boolberry
-* sha256d
-* lbry
-
+Current version v1.0.0
 Usage
------
-
-Install
-
-```bash
-npm install multi-hashing
-```
-
-So far this native Node.js addon can do the following hashing algos
-
-```javascript
-var multiHashing = require('multi-hashing');
-
-var algorithms = ['quark', 'x11', 'scrypt', 'scryptn', 'scryptjane', 'keccak', 'bcrypt', 'skein', 'blake'];
-
-var data = Buffer.from("7000000001e980924e4e1109230383e66d62945ff8e749903bea4336755c00000000000051928aff1b4d72416173a8c3948159a09a73ac3bb556aa6bfbcad1a85da7f4c1d13350531e24031b939b9e2b", "hex");
-
-var hashedData = algorithms.map(function(algo){
-    if (algo === 'scryptjane'){
-        //scryptjane needs block.nTime and nChainStartTime (found in coin source)
-        var yaCoinChainStartTime = 1367991200;
-        var nTime = Math.round(Date.now() / 1000);
-        return multiHashing[algo](data, nTime, yaCoinChainStartTime);
-    }
-    else{
-        return multiHashing[algo](data);
-    }
-});
-
-
-console.log(hashedData);
-//<SlowBuffer 0b de 16 ef 2d 92 e4 35 65 c6 6c d8 92 d9 66 b4 3d 65 ..... >
-
-
-```
-
-Credits
 -------
-* [NSA](http://www.nsa.gov/) and [NIST](http://www.nist.gov/) for creation or sponsoring creation of SHA2 and SHA3 algos
-* [Keccak](http://en.wikipedia.org/wiki/Keccak) - Guido Bertoni, Joan Daemen, Michaël Peeters, and Gilles Van Assche
-* [Skein](http://en.wikipedia.org/wiki/Skein_(hash_function)) - Bruce Schneier, Stefan Lucks, Niels Ferguson, Doug Whiting, Mihir Bellare, Tadayoshi Kohno, Jon Callas and Jesse Walker.
-* [BLAKE](http://en.wikipedia.org/wiki/BLAKE_(hash_function)) - Jean-Philippe Aumasson, Luca Henzen, Willi Meier, and Raphael C.-W. Phan
-* [Grøstl](http://en.wikipedia.org/wiki/Gr%C3%B8stl) - Praveen Gauravaram, Lars Knudsen, Krystian Matusiewicz, Florian Mendel, Christian Rechberger, Martin Schläffer, and Søren S. Thomsen
-* [JH](http://en.wikipedia.org/wiki/JH_(hash_function)) - Hongjun Wu
-* [Fugue](http://en.wikipedia.org/wiki/Fugue_(hash_function)) - Shai Halevi, William E. Hall, and Charanjit S. Jutla
-* [scrypt](http://en.wikipedia.org/wiki/Scrypt) - Colin Percival
-* [bcrypt](http://en.wikipedia.org/wiki/Bcrypt) - Niels Provos and David Mazières
-* [X11](http://www.darkcoin.io/), [Hefty1](http://heavycoin.github.io/about.html), [Quark](http://www.qrk.cc/) creators (they just mixed together a bunch of the above algos)
+```js
+var x25x = require('node-x25x');
+var buf = Buffer.from('password', 'utf8');
+var hash = x25x.x25x(buf);
+console.log(hash);
+// => <Buffer 13 9c 16 0c a5 5f 02 e2 81 c6 9e fe b9 6b 8b c1 86 a2 d7 3b 17 66 56 20 ae 51 ac 45 e5 78 90 a1>
