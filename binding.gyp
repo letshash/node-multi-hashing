@@ -1,7 +1,7 @@
 {
     "targets": [
         {
-            "target_name": "nodex25x",
+            "target_name": "multihashing",
             "sources": [
                 "multihashing.cc",
 		"sph/aes_helper.c",
