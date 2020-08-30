@@ -57,6 +57,37 @@ extern "C" {
 
 using namespace node;
 using namespace v8;
+#define THROW_ERROR_EXCEPTION(x) Nan::ThrowError(x)
+#define THROW_ERROR_EXCEPTION_WITH_STATUS_CODE(x, y) NanThrowError(x, y)
+
+using namespace node;
+using namespace v8;
+
+NAN_METHOD(x25x) {
+
+    if (info.Length() < 1)
+        return THROW_ERROR_EXCEPTION("You must provide one argument.");
+
+    Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked();
+
+    if(!Buffer::HasInstance(target))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char *output = (char*) malloc(sizeof(char) * 32);
+
+    uint32_t input_len = Buffer::Length(target);
+
+    x25x_hash(input, output);
+
+    info.GetReturnValue().Set(Nan::NewBuffer(output, 32).ToLocalChecked());
+}
+
+NAN_MODULE_INIT(init) {
+    Nan::Set(target, Nan::New("x25x").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(x25x)).ToLocalChecked());
+}
+
+NODE_MODULE(nodex25x, init)
 
 #if NODE_MAJOR_VERSION >= 4
 
@@ -236,7 +267,6 @@ DECLARE_NO_INPUT_LENGTH_CALLBACK(m7, m7_hash, 32);
 DECLARE_NO_INPUT_LENGTH_CALLBACK(m7m, m7m_hash, 32);
 DECLARE_NO_INPUT_LENGTH_CALLBACK(phi1612, phi1612_hash, 32);
 DECLARE_NO_INPUT_LENGTH_CALLBACK(tribus, tribus_hash, 32);
-DECLARE_NO_INPUT_LENGTH_CALLBACK(x25x, x25x_hash, 32);
 DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower, yespower_hash, 32);
 DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower_0_5_R8, yespower_0_5_R8_hash, 32);
 DECLARE_NO_INPUT_LENGTH_CALLBACK(yespower_0_5_R16, yespower_0_5_R16_hash, 32);
@@ -695,7 +725,6 @@ DECLARE_INIT(init) {
     NODE_SET_METHOD(exports, "x16r", x16r);
     NODE_SET_METHOD(exports, "x16rv2", x16rv2);
     NODE_SET_METHOD(exports, "x17", x17);
-    NODE_SET_METHOD(exports, "x25x", x25x);
     NODE_SET_METHOD(exports, "xevan", xevan);
     NODE_SET_METHOD(exports, "yespower", yespower);
     NODE_SET_METHOD(exports, "yespower_0_5_R8", yespower_0_5_R8);
